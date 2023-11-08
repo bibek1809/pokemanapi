@@ -1,10 +1,12 @@
 from typing import Union
 from fastapi import FastAPI, Depends
 from fastapi.routing import APIRoute
-from services.dbhelper import DatabaseHelper
+from fastapi.responses import JSONResponse
+from utils.dbhelper import DatabaseHelper
+from service import dbservice,requestservice
 import asyncio
 import asyncpg
-from utils import Configuration
+from utils import Configuration,constant
 import datetime
 app = FastAPI()
 
@@ -13,9 +15,17 @@ db_details = {"user":Configuration.db_user, "password":Configuration.db_password
 db_helper = DatabaseHelper(db_details=db_details)
 
 
+@app.get("/api/v{version}/pokemons", tags=["Pokemons"])
+def get_pokemons(version: int,name: str = None,params: str = None):
+    if version == 1:
+        data = dbservice.get_details(name,params)
+        return {"data": data}  
+    else:
+        return JSONResponse(content=constant.invalid_version, status_code=400)
+
 @app.get("/")
-def complete_configuration():
-    return {"Hello": "World"}
+def home():
+    return constant.Home, 200 
 
 
 @app.on_event("startup")
@@ -26,31 +36,19 @@ async def startup_event():
 async def main():
     # Establish a connection to an existing database named "test"
     # as a "postgres" user.
-    conn = await asyncpg.connect(db_helper.create_conn_string)
+    conn = await asyncpg.connect('postgresql://admin:admin@localhost/pokemon')
     # Execute a statement to create a new table.
-    await conn.execute('''
-        CREATE TABLE IF NOT EXISTS pokeman_table (
-    name VARCHAR(255) NOT NULL,
-    image VARCHAR(255) NOT NULL,
-    type VARCHAR(255) NOT NULL
-        )
-
-    ''')
-
+    await conn.execute(constant.create_table)
+    requestservice.fetchdetails()
     # Insert a record into the created table.
     await conn.execute('''
-        INSERT INTO pokeman_table(name, image,type) VALUES($1, $2)
+        INSERT INTO pokeman_table(name, image, type)
+        VALUES ('test', 'files', 'hi')
+        ON CONFLICT (name) DO UPDATE
+        SET image = EXCLUDED.image, type = EXCLUDED.type;
+
     ''')
 
-    # Select a row from the table.
-    row = await conn.fetchrow(
-        'SELECT * FROM users WHERE name = $1', 'Bob')
-    # *row* now contains
-    # asyncpg.Record(id=1, name='Bob', dob=datetime.date(1984, 3, 1))
 
     # Close the connection.
     await conn.close()
-
-@app.get("/api/v1/pokemons")
-def get_pokemons(name: str = None, type: str = None):
-    return hello
