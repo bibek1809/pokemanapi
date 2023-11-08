@@ -8,19 +8,20 @@ db_helper = DatabaseHelper(db_details=db_details)
 def get_details(name,params):
     where_condition = ''
     if name and params:
-        where_condition = f'''where name= '{name}' and params = '{params}' '''
+        where_condition = f'''where name= '{name}' and type like '%{params}%' '''
 
     elif name:
         where_condition = f'''where name= '{name}' '''
 
 
     elif params:
-        where_condition = f'''where params like '%{params}%' '''
+        where_condition = f'''where type like '%{params}%' '''
 
     else:
         pass
 
-    query = f'''select distinct * from pokeman_table {where_condition}'''
+    query = f'''select distinct name, image, type  from pokeman_table {where_condition}'''
+    print(query)
     result = db_helper.execute_query(query,fetch=True)
     return transform_data(result)
 
