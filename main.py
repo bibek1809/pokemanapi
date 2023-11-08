@@ -30,25 +30,25 @@ def home():
 
 @app.on_event("startup")
 async def startup_event():
+    try:
     # Run your main function to set up the database
-    await main()
+        await main()
+    except Exception as e:
+        return JSONResponse(content=f"An error occurred during startup: {str(e)}", status_code=500)
 
 async def main():
-    # Establish a connection to an existing database named "test"
-    # as a "postgres" user.
-    conn = await asyncpg.connect('postgresql://admin:admin@localhost/pokemon')
-    # Execute a statement to create a new table.
-    await conn.execute(constant.create_table)
-    requestservice.fetchdetails()
-    # Insert a record into the created table.
-    await conn.execute('''
-        INSERT INTO pokeman_table(name, image, type)
-        VALUES ('test', 'files', 'hi')
-        ON CONFLICT (name) DO UPDATE
-        SET image = EXCLUDED.image, type = EXCLUDED.type;
+    try:
+        # Establish a connection to an existing database named "test"
+        # as a "postgres" user.
+        conn = await asyncpg.connect('postgresql://admin:admin@localhost/pokemon')
+        # Execute a statement to create a new table.
+        await conn.execute(constant.create_table)
+        data_list = requestservice.fetchdetails()
+        # Insert a record into the created table.
+        await  conn.executemany(constant.insert_query, data_list)
 
-    ''')
+        # Close the connection.
+        await conn.close()
+    except Exception as e:
+        return JSONResponse(content=f"An error occurred in the main function: {str(e)}", status_code=500)
 
-
-    # Close the connection.
-    await conn.close()

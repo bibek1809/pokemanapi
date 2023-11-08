@@ -15,7 +15,7 @@ def get_details(name,params):
 
 
     elif params:
-        where_condition = f'''where params= '{params}' '''
+        where_condition = f'''where params like '%{params}%' '''
 
     else:
         pass
