@@ -8,19 +8,19 @@ db_helper = DatabaseHelper(db_details=db_details)
 def get_details(name,params):
     where_condition = ''
     if name and params:
-        where_condition = f'''where name= '{name}' and type like '%{params}%' '''
+        where_condition = f'''where name= '{name}' and  type ILIKE '%{params}%' '''
 
     elif name:
         where_condition = f'''where name= '{name}' '''
 
 
     elif params:
-        where_condition = f'''where type like '%{params}%' '''
+        where_condition = f'''where type ILIKE '%{params}%' '''
 
     else:
         pass
 
-    query = f'''select distinct name, image, type  from pokeman_table {where_condition}'''
+    query = f'''select distinct name, type, image  from pokeman_table {where_condition}'''
     print(query)
     result = db_helper.execute_query(query,fetch=True)
     return transform_data(result)
@@ -37,5 +37,5 @@ def transform_data(data_list):
 
     
 def insert_details(values):
-    query = f'''INSERT INTO pokeman_table(name, image,type) {values}'''
+    query = f'''INSERT INTO pokeman_table(name, type,image) {values}'''
     db_helper.execute_query(query)

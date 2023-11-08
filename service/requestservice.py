@@ -34,11 +34,12 @@ def get_pokemon_details(pokemon_name):
         name = data["name"]
         image = data["sprites"]["front_shiny"]
         types = [type_data["type"]["name"] for type_data in data["types"]]
-        return (name, image, ', '.join(types))
+        return (name, ', '.join(types),image)
     else:
         return None
     
 def fetchdetails():
+    #pokemon_names =  get_all_pokemon_names()
     pokemon_names =  get_pokemon()
     pokemon_details = []
     for pokemon_id in pokemon_names:
