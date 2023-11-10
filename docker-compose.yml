@@ -14,8 +14,8 @@ services:
       - POSTGRES_DB=pokemon
     depends_on:
       - db
-    network_mode:
-      - bridge
+    networks:
+      - pokemanapi_pokemanapi_default
 
   db:
     image: postgres:latest
@@ -25,5 +25,8 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=pokemon
-    network_mode:
-      - bridge
+    networks:
+      - pokemanapi_pokemanapi_default
+
+networks:
+  pokemanapi_pokemanapi_default:

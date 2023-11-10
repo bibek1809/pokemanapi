@@ -1,3 +1,10 @@
+# using docker
+1. sudo docker-compose build
+2. sudo docker-compose run --rm pokemon-api /opt/venv/bin/pip list
+3. docker-compose up
+
+
+
 # pokemanapi
 1. After Installation of required enviroment the system can be run using through reuirement.txt
 :
@@ -21,3 +28,6 @@ After that step
 7. Pokemon By params types can be fetched through <url>/api/v1/pokemons?params=<params>
 8. Pokemon By name can be fetched through <url>/api/v1/pokemons?name=<name> 
 9. Pokemon By name and by params can be fetched through <url>/api/v1/pokemons?name=<name>&params=<params>
+
+
+

@@ -2,7 +2,7 @@
 from utils.dbhelper import DatabaseHelper
 from utils import constant
 from utils.loggerfactory import LoggerFactory  
-
+from config import configuration
 logger_factory = LoggerFactory.get_logger("dbservice")
 
 db_helper = DatabaseHelper(db_details=constant.db_details)

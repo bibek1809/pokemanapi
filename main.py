@@ -1,4 +1,5 @@
 from typing import Union
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 # from fastapi.exceptions import RequestValidationError
@@ -28,12 +29,11 @@ def get_pokemons(version: int, name: str = None, params: str = None):
 
 
 @app.get("/")
-def home():
+async def home():
+    # await configsetup.main()
     logger.info("Home endpoint accessed done.")
     return constant.Home, 200 
 
-
-@app.on_event("startup")
 async def startup_event():
     try:
     # Run your main function to set up the database
@@ -41,6 +41,11 @@ async def startup_event():
     except Exception as e:
         logger.error(f"An error occurred during startup: {str(e)}")
         return JSONResponse(content=f"An error occurred during startup: {str(e)}", status_code=500)
+
+
+
+
+app.add_event_handler("startup", startup_event)
 
 
 

@@ -13,7 +13,8 @@ class DatabaseHelper:
         self.logger_factory = LoggerFactory.get_logger("dbhelper")
 
     def create_conn_string(self):
-        self.connection_str = f'''postgresql://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}'''
+        self.connection_str = f'''postgresql://{self.user}:{self.password}@db:{self.port}/{self.database}'''
+        # self.logger_factory.info(f"{self.connection_str}")
         return self.connection_str
         #return "postgresql://admin:admin@localhost/pokemon"
 
