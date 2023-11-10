@@ -32,7 +32,8 @@ def get_pokemons(version: int, name: str = None, params: str = None):
 
 @app.get("/")
 def home():
-    logger.info("Home endpoint accessed.")
+    logger.info("Home endpoint accessed done.")
+
     return constant.Home, 200 
 
 
