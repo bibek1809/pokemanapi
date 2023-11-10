@@ -1,16 +1,13 @@
 from typing import Union
 from fastapi import FastAPI, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.exceptions import RequestValidationError
-from fastapi.routing import APIRoute
+# from fastapi.exceptions import RequestValidationError
+# from fastapi.routing import APIRoute
 from fastapi.responses import JSONResponse
-from utils.dbhelper import DatabaseHelper
-from service import dbservice,requestservice
-import asyncio
-import asyncpg
+from service import dbservice
 from utils.loggerfactory import LoggerFactory  # Import your LoggerFactory class
-from utils import configuration,constant
-import datetime
+from utils import constant
+from config import configsetup
 app = FastAPI()
 
 logger = LoggerFactory.get_logger("main")
@@ -33,7 +30,6 @@ def get_pokemons(version: int, name: str = None, params: str = None):
 @app.get("/")
 def home():
     logger.info("Home endpoint accessed done.")
-
     return constant.Home, 200 
 
 
@@ -41,27 +37,12 @@ def home():
 async def startup_event():
     try:
     # Run your main function to set up the database
-        await main()
+        await configsetup.main()
     except Exception as e:
         logger.error(f"An error occurred during startup: {str(e)}")
         return JSONResponse(content=f"An error occurred during startup: {str(e)}", status_code=500)
 
-async def main():
-    try:
-        # Establish a connection to an existing database named "test"
-        # as a "postgres" user.
-        conn = await asyncpg.connect(dbservice.db_helper.create_conn_string())
-        # Execute a statement to create a new table.
-        await conn.execute(constant.create_table)
-        data_list = requestservice.fetchdetails()
-        # Insert a record into the created table.
-        await  conn.executemany(constant.insert_query, data_list)
 
-        # Close the connection.
-        await conn.close()
-    except Exception as e:
-        logger.error(f"An error occurred in the main function: {str(e)}")
-        return JSONResponse(content=f"An error occurred in the main function: {str(e)}", status_code=500)
 
 # CORS middleware for handling Cross-Origin Resource Sharing
 app.add_middleware(

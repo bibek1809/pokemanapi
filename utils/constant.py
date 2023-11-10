@@ -1,5 +1,5 @@
-from utils import configuration
-create_table = '''drop table pokeman_table;CREATE TABLE IF NOT EXISTS pokeman_table (
+from config import configuration
+create_table = '''CREATE TABLE IF NOT EXISTS pokeman_table (
     name VARCHAR(255) Unique NOT NULL,
     type VARCHAR(255) NOT NULL,
     image VARCHAR(255) NOT NULL);'''
@@ -19,7 +19,12 @@ invalid_version= {
 "error": 'BAD_REQUEST',
 "message": 'Invalid Version !'
 }
-
+server_error= {
+"success": False,
+"code": 400,
+"error": 'Server Error',
+"message": 'Server Error !'
+}
 
 Home= {
 "success": True,

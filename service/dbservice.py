@@ -1,5 +1,6 @@
+# from config import configuration
 from utils.dbhelper import DatabaseHelper
-from utils import configuration,constant
+from utils import constant
 from utils.loggerfactory import LoggerFactory  
 
 logger_factory = LoggerFactory.get_logger("dbservice")
