@@ -1,4 +1,4 @@
-from utils.Env import Env
+from utils.env import Env
 import os
 import json
 env = Env.instance()

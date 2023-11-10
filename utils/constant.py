@@ -1,3 +1,4 @@
+from utils import configuration
 create_table = '''drop table pokeman_table;CREATE TABLE IF NOT EXISTS pokeman_table (
     name VARCHAR(255) Unique NOT NULL,
     type VARCHAR(255) NOT NULL,
@@ -26,3 +27,5 @@ Home= {
 "error": 'Valid Request',
 "message": 'Valid Request !'
 }
+db_details = {"user":configuration.db_user, "password":configuration.db_password,
+                             "host":configuration.db_host,"port":configuration.db_port,"database":configuration.db_database}
