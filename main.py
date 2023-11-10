@@ -35,13 +35,24 @@ async def home():
     return constant.Home, 200 
 
 async def startup_event():
-    try:
-    # Run your main function to set up the database
-        await configsetup.main()
-    except Exception as e:
-        logger.error(f"An error occurred during startup: {str(e)}")
-        return JSONResponse(content=f"An error occurred during startup: {str(e)}", status_code=500)
+    max_retries = 10
+    retry_interval_seconds = 5
 
+    for retry_attempt in range(1, max_retries + 1):
+        try:
+            # Run your main function to set up the database
+            await configsetup.main()
+            logger.info("Database setup completed successfully.")
+            break  # Break out of the loop if successful
+        except Exception as e:
+            logger.error(f"Error during database setup: {str(e)}")
+            
+            if retry_attempt < max_retries:
+                logger.info(f"Retrying in {retry_interval_seconds} seconds (attempt {retry_attempt}/{max_retries}).")
+                await asyncio.sleep(retry_interval_seconds)
+            else:
+                logger.error(f"Max retries reached. Unable to set up the database.")
+                raise JSONResponse(content=f"Unable to set up the database: {str(e)}", status_code=500)
 
 
 

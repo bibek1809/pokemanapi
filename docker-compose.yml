@@ -27,6 +27,8 @@ services:
       - POSTGRES_DB=pokemon
     networks:
       - pokemanapi_pokemanapi_default
+    volumes:
+      - /data/postgres_data:/var/lib/postgresql/data
 
 networks:
   pokemanapi_pokemanapi_default:
