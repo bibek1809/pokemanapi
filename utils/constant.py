@@ -25,6 +25,13 @@ server_error= {
 "error": 'Server Error',
 "message": 'Server Error !'
 }
+params_error= {
+"success": False,
+"code": 400,
+"error": 'Invalid params used:{}',
+"message": 'Parameter Error !'
+}
+
 
 Home= {
 "success": True,
@@ -34,3 +41,9 @@ Home= {
 }
 db_details = {"user":configuration.db_user, "password":configuration.db_password,
                              "host":configuration.db_host,"port":configuration.db_port,"database":configuration.db_database}
+
+data = {
+    "main":{
+        "get_pokemons":{'name','type'}
+    }
+}

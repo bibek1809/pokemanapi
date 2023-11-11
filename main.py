@@ -1,20 +1,25 @@
 from typing import Union
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Depends, Request
+from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 from fastapi.responses import JSONResponse
 from entity.pokemontable import Pokemon
 pokemon = Pokemon()
 from utils.loggerfactory import LoggerFactory  # Import your LoggerFactory class
-from utils import constant
+from utils import constant,validation
 from config import configsetup
 app = FastAPI()
 
 logger = LoggerFactory.get_logger("main")
 
 @app.get("/api/v{version}/pokemons", tags=["Pokemons"])
-def get_pokemons(version: int, name: str = None, type: str = None):
+def get_pokemons(request: Request, version: int, name: str = Query(None, title="Pokemon Name"), type: str = Query(None, title="Pokemon Type")):    # if kwargs.keys(): 
+    unexpected_params = set(request.query_params.keys()) - validation.get_params()
+    if unexpected_params:
+        logger.warning(f"Invalid params used: {unexpected_params}")
+        error_message = constant.params_error["error"].format(unexpected_params)
+        return JSONResponse(content=dict(constant.params_error, error=error_message), status_code=400)
     if version == 1:
         try:
             data = pokemon.get_details(name, type)
@@ -27,7 +32,7 @@ def get_pokemons(version: int, name: str = None, type: str = None):
         logger.warning(f"Invalid version requested: {version}")
         return JSONResponse(content=constant.invalid_version, status_code=400)
 
-
+        
 @app.get("/")
 async def home():
     # await configsetup.main()
