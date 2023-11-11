@@ -25,9 +25,9 @@ After that step
 4. run uvicorn main:app --reload in bash
 5. The Api that are avaliable can be fetch through <url>/docs
 6. All pokemons details can be fetched through <url>/api/v1/pokemons
-7. Pokemon By params types can be fetched through <url>/api/v1/pokemons?params=<params>
+7. Pokemon By types can be fetched through <url>/api/v1/pokemons?type=<type>
 8. Pokemon By name can be fetched through <url>/api/v1/pokemons?name=<name> 
-9. Pokemon By name and by params can be fetched through <url>/api/v1/pokemons?name=<name>&params=<params>
+9. Pokemon By name and by tyoes can be fetched through <url>/api/v1/pokemons?name=<name>&type=<type>
 
 
 

@@ -4,17 +4,17 @@ from utils.jsontransform import transform_data
 logger_factory = LoggerFactory.get_logger("pokemontable")
 
 class Pokemon(Entity):
-    def get_details(self,name,params):
+    def get_details(self,name,type):
         where_condition = ''
-        if name and params:
-            where_condition = f'''where name= '{name}' and  type ILIKE '%{params}%' '''
+        if name and type:
+            where_condition = f'''where name= '{name}' and  type ILIKE '%{type}%' '''
 
         elif name:
             where_condition = f'''where name= '{name}' '''
 
 
-        elif params:
-            where_condition = f'''where type ILIKE '%{params}%' '''
+        elif type:
+            where_condition = f'''where type ILIKE '%{type}%' '''
 
         else:
             pass

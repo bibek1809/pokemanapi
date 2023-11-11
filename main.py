@@ -15,10 +15,10 @@ app = FastAPI()
 logger = LoggerFactory.get_logger("main")
 
 @app.get("/api/v{version}/pokemons", tags=["Pokemons"])
-def get_pokemons(version: int, name: str = None, params: str = None):
+def get_pokemons(version: int, name: str = None, type: str = None):
     if version == 1:
         try:
-            data = pokemon.get_details(name, params)
+            data = pokemon.get_details(name, type)
             logger.info("Data fetched successfully")
             return {"data": data}
         except Exception as e:
