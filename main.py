@@ -2,8 +2,7 @@ from typing import Union
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
-# from fastapi.exceptions import RequestValidationError
-# from fastapi.routing import APIRoute
+import asyncio
 from fastapi.responses import JSONResponse
 from entity.pokemontable import Pokemon
 pokemon = Pokemon()

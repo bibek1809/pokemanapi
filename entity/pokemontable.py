@@ -22,7 +22,8 @@ class Pokemon(Entity):
         query = f'''select distinct name, type, image  from pokeman_table {where_condition}'''
         logger_factory.info(f"Executing query: {query}")
         result = self.db_helper.execute_query(query,fetch=True)
-        return transform_data(result)
+        keys = ['name', 'type', 'image']
+        return transform_data(result,keys)
     
     def insert_details(self,values):
         query = f'''INSERT INTO pokeman_table(name, type,image) {values}'''
