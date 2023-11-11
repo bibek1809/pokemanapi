@@ -1,5 +1,5 @@
 from config import configuration
-create_table = '''CREATE TABLE IF NOT EXISTS pokeman_table (
+create_table = '''drop table pokeman_table; CREATE TABLE IF NOT EXISTS pokeman_table (
     name VARCHAR(255) Unique NOT NULL,
     type VARCHAR(255) NOT NULL,
     image VARCHAR(255) NOT NULL);'''
