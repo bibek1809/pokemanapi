@@ -5,7 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 # from fastapi.exceptions import RequestValidationError
 # from fastapi.routing import APIRoute
 from fastapi.responses import JSONResponse
-from service import dbservice
+from entity.pokemontable import Pokemon
+pokemon = Pokemon()
 from utils.loggerfactory import LoggerFactory  # Import your LoggerFactory class
 from utils import constant
 from config import configsetup
@@ -17,7 +18,7 @@ logger = LoggerFactory.get_logger("main")
 def get_pokemons(version: int, name: str = None, params: str = None):
     if version == 1:
         try:
-            data = dbservice.get_details(name, params)
+            data = pokemon.get_details(name, params)
             logger.info("Data fetched successfully")
             return {"data": data}
         except Exception as e:

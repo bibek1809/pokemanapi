@@ -1,13 +1,16 @@
-from service import dbservice,requestservice
+from service import requestservice
+from entity.pokemontable import Pokemon
 import asyncpg
 from utils import constant
 from utils.loggerfactory import LoggerFactory
+entity_instance = Pokemon()
+database_helper = entity_instance.db_helper
 logger = LoggerFactory.get_logger("configsetup")
 async def main():
     try:
         # Establish a connection to an existing database named "test"
         # as a "postgres" user.
-        conn = await asyncpg.connect(dbservice.db_helper.create_conn_string())
+        conn = await asyncpg.connect(database_helper.create_conn_string())
         # Execute a statement to create a new table.
         await conn.execute(constant.create_table)
         data_list = requestservice.fetchdetails()
